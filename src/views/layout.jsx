@@ -35,7 +35,7 @@ const Layout = () => {
                   }
                 </div>
                 <div className="col-md-auto text-light">
-                  <button className="btn btn-light d-none d-md-block position-relative"><i class="bi bi-cart2 me-1"></i>0,00 €<span className="position-absolute top-0 start-0 translate-middle bg-primary rounded-circle p-2"><span className="visually-hidden">Nombre d'articles</span></span></button>
+                  <button className="btn btn-light d-none d-md-block position-relative"><i className="bi bi-cart2 me-1"></i>0,00 €<span className="position-absolute top-0 start-0 translate-middle bg-primary rounded-circle p-2"><span className="visually-hidden">Nombre d'articles</span></span></button>
                   <div className="d-block d-md-none text-light">0,00 €</div>
                 </div>
               </div>
