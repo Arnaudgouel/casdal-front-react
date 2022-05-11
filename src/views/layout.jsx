@@ -1,6 +1,67 @@
 import { Fragment, useState } from "react"
 import { Link, Outlet } from "react-router-dom"
-import profile from "../img/icons/profile.svg"
+import profile from "../assets/img/icons/profile.svg"
+
+const Footer = () => {
+  return (
+    <div className="container-fluid bg-dark text-light mt-5 pb-5">
+      <div className="container">
+        <div className="row g-3 justify-content-around align-items-stretch">
+          <div className="col-6 col-md-3">
+            <div className="bg-secondary p-1 rounded h-100">
+              Découvrir Casdal
+              <p className="card-text placeholder-glow">
+                <span className="placeholder col-7"></span>
+              </p>
+              <p className="card-text placeholder-glow">
+                <span className="placeholder col-8"></span>
+              </p>
+              <p className="card-text placeholder-glow">
+                <span className="placeholder col-9"></span>
+              </p>
+              <p className="card-text placeholder-glow">
+                <span className="placeholder col-5"></span>
+              </p>
+              <p className="card-text placeholder-glow">
+                <span className="placeholder col-6"></span>
+              </p>
+            </div>  
+          </div>
+          <div className="col-6 col-md-3">
+            <div className="bg-secondary p-1 rounded h-100">
+              Mentions légales
+              <p className="card-text placeholder-glow">
+                <span className="placeholder col-7"></span>
+              </p>
+              <p className="card-text placeholder-glow">
+                <span className="placeholder col-5"></span>
+              </p>
+              <p className="card-text placeholder-glow">
+                <span className="placeholder col-6"></span>
+              </p>
+            </div>  
+          </div>
+          <div className="col-6 col-md-3">
+            <div className="bg-secondary p-1 rounded h-100">
+              Aide
+              <p className="card-text placeholder-glow">
+                <span className="placeholder col-7"></span>
+              </p>
+            </div>  
+          </div>
+          <div className="col-6 col-md-3">
+            <div className="bg-secondary p-1 rounded h-100">
+              Gardez Casdal dans votre poche
+              <p className="card-text placeholder-glow">
+                <span className="placeholder col-7"></span>
+              </p>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const Layout = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -44,6 +105,7 @@ const Layout = () => {
         </nav>
       </div>
       <Outlet/>
+      <Footer/>
     </Fragment>
   )
 }

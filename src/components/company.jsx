@@ -1,58 +1,85 @@
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
-import logo from "../img/restaurant.jpg"
+import { Fragment, useEffect, useState } from "react"
+import { Link, useParams } from "react-router-dom"
+import logo from "../assets/img/restaurant.jpg"
 import API from "../utils/api"
 
 const CompanyItem = ({className, item}) => {
 
   return (
     <div className={`${className}`}>
-      <Link to="/menu" className="text-decoration-none text-black">
+      <Link to={`/menu/${item.id}`} className="text-decoration-none text-black">
         <div className="h-100 bg-white shadow">
           <img className="img-fluid" src={logo} alt="company logo" />
-          <div>Titre restaurant</div>
-          <div>Catégorie</div>
+          <div className="fw-bold">{item.name}</div>
+          <div>{item.category}</div>
         </div>
       </Link>
     </div>
   )
 }
 
-const Company = () => {
+const Company = ({filter}) => {
   const [companies, setCompanies] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
   const [error, setError] = useState(null)
+  let params = useParams()
+  let url = "companies"
+
+  switch (filter) {
+    case "category":
+      url = `companies/category?category_id=${params.id}`
+      break;
+  
+    default:
+      break;
+  }
 
 
   useEffect(() => {
-    API.get(`companies`)
+    setIsLoaded(false)
+    API.get(`${url}`)
       .then(res => {
-        console.log(res)
-        setCompanies(res)
-        setLoading(false)
+        setCompanies(res.data)
+        setIsLoaded(true)
       })
       .catch(error => {
         setError(error)
-        setLoading(false)
-        console.log(error)
+        setIsLoaded(true)
       })
-  }, [])
+  }, [url])
 
+  if (error) {
+    return <div>Erreur : {error.message}</div>
+  }
+  else if (!isLoaded) {
+    return (
+      <div className="row rows-col-md-3 rows-col-sm-2 rows-col-1">
+        <div className="card" aria-hidden="true">
+          <div className="card-body">
+            <h5 className="card-title placeholder-glow">
+              <span className="placeholder col-6"></span>
+            </h5>
+            <p className="card-text placeholder-glow">
+              <span className="placeholder col-7"></span>
+              <span className="placeholder col-4"></span>
+              <span className="placeholder col-4"></span>
+              <span className="placeholder col-6"></span>
+              <span className="placeholder col-8"></span>
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
   return (
-    <div className="row gy-3 justify-content-around align-items-stretch">
-      <CompanyItem className="col-6 col-lg-2">1</CompanyItem>
-      <CompanyItem className="col-6 col-lg-2">2</CompanyItem>
-      <CompanyItem className="col-6 col-lg-2">3</CompanyItem>
-      <CompanyItem className="col-6 col-lg-2">4</CompanyItem>
-      <CompanyItem className="col-6 col-lg-2">5</CompanyItem>
-      <CompanyItem className="col-6 col-lg-2">6</CompanyItem>
-      <CompanyItem className="col-6 col-lg-2">7</CompanyItem>
-      <CompanyItem className="col-6 col-lg-2">8</CompanyItem>
-      <CompanyItem className="col-6 col-lg-2">9</CompanyItem>
-      <CompanyItem className="col-6 col-lg-2">10</CompanyItem>
-      <CompanyItem className="col-6 col-lg-2">11</CompanyItem>
-      <CompanyItem className="col-6 col-lg-2">12</CompanyItem>
-    </div>
+    <Fragment>
+      <div>
+        <h3>Restaurants</h3>
+      </div>
+      <div className="row gy-3 justify-content-around align-items-stretch">
+        {companies.map(company => <CompanyItem key={company.id} item={company} className="col-6 col-lg-2" ></CompanyItem>)}
+      </div>
+    </Fragment>
   )
 }
 
