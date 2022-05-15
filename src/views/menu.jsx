@@ -1,23 +1,24 @@
-import { Fragment, useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Box, Modal } from "@mui/material"
+import { Fragment, useContext, useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 import logo from "../assets/img/casdal_500.png"
+import { useMe } from "../hooks/useMe"
+import { CartContext } from "../utils"
 import api from "../utils/api"
 
 const ProductCategoriesHeader = ({item}) => {
   return (
-    <div className="col-auto">
-      <div className="bg-light rounded-pill px-2" onClick={() => window.location.replace(`#category_${item.id}`)}>
-        {item.name}
-      </div>
-    </div>
+    <li className="nav-item">
+      <a className="nav-link" href={`#scrollspycategory${item.id}`}>{item.name}</a>
+    </li>
   )
 }
 
 const ProductsCategories = ({item, products}) => {
   return (
     <Fragment>
-      <h4 className="fs-2 mt-4" id={`category_${item.id}`}>{item.name}</h4>
-      <div className="row align-items-stretch">
+      <h4 id={`scrollspycategory${item.id}`} className="fs-2 mt-4">{item.name}</h4>
+      <div className="row gy-3">
         {products.map(product => <Products key={product.id} item={product}/>)}
       </div>
     </Fragment>
@@ -25,10 +26,32 @@ const ProductsCategories = ({item, products}) => {
 }
 
 const Products = ({item}) => {
+  const [open, setOpen] = useState(false);
+  const [cartQuantity, setCartQuantity] = useState(1);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const {me} = useMe();
+  const {setPrice, setQuantity} = useContext(CartContext);
+
+
+  const handleOnAddToCart = () => {
+    let data = new FormData();
+    data.append("product_id", item.id)
+    data.append("quantity", cartQuantity)
+    data.append("user_id", me.id)
+    api.post('cart/items',data)
+      .then(res => {
+        setPrice(res.data.total.price)
+        setQuantity(res.data.total.quantity)
+        handleClose()
+        setCartQuantity(1)
+      })
+  }
+
   return (
     <div className="col-md-4">
-      <div className="bg-light p-2 shadow-sm">
-        <div className="row">
+      <div className="bg-light p-2 shadow-sm" onClick={handleOpen}>
+        <div className="row align-items-center">
           <div className="col-8">
             <p className="fw-bold">{item.name}</p>
             <p className="">{item.description}</p>
@@ -39,6 +62,34 @@ const Products = ({item}) => {
           </div>
         </div>
       </div>
+      <Modal
+        open={open}
+        onClose={() => {
+          handleClose() 
+          setCartQuantity(1)
+          }
+        }
+        disableScrollLock={true}
+      >
+        <Box className="position-absolute top-50 start-50 translate-middle bg-light px-5 py-1 text-center mw-100">
+          <h2>{item.name}</h2>
+          <img src={logo} alt={item.name} className="img-fluid" width={"200px"} />
+          <div className="row justify-content-around mt-3">
+            <div className="col-4">
+              <i 
+                className="bi bi-dash-circle" 
+                onClick={() => {
+                  if (cartQuantity > 1) setCartQuantity(cartQuantity-1)
+                }} 
+                style={{cursor: "pointer"}}
+              ></i>
+            </div>
+            <div className="col-4">{cartQuantity}</div>
+            <div className="col-4"><i className="bi bi-plus-circle" onClick={() => {setCartQuantity(cartQuantity+1)}} style={{cursor: "pointer"}}></i></div>
+          </div>
+          <button onClick={handleOnAddToCart} className="btn btn-primary mt-3 text-white">Ajouter au panier</button>
+        </Box>
+      </Modal>
     </div>
   )
 }
@@ -87,7 +138,7 @@ const Menu = () => {
     )
   }
   return (
-    <div>
+    <Fragment>
       <div className="bg-info container-fluid pt-5">
         <div className="row h-100 pb-2">
           <div className="col-md-4 text-center"><img src={logo} alt="logo casdal" className="img-fluid w-25" /></div>
@@ -98,15 +149,22 @@ const Menu = () => {
           </div>
         </div>
       </div>
-      <div className="bg-info container-fluid py-2 px-5 border-top position-sticky top-0">
-        <div className="row">
-          {categories.map(category => <ProductCategoriesHeader key={category.id} item={category}/>)}
+      <nav id="navbar-category" className="navbar navbar-expand-lg navbar-light bg-light px-3 sticky-top">
+        <div className="container-fluid">
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarScroll">
+            <ul className="nav nav-pills navbar-nav navbar-nav-scroll">
+              {categories.map(category => <ProductCategoriesHeader key={category.id} item={category}/>)}
+            </ul>
+          </div>
         </div>
-      </div>
-      <div data-bs-spy="scroll" data-bs-target="#list" data-bs-offset="0" tabIndex="0" className="container scrollspy-example">
+      </nav>
+      <div className="container">
         {categories.map(category => <ProductsCategories key={category.id} item={category} products={products.filter(product => product.product_category_id === category.id)}/>)}
       </div>
-    </div>
+    </Fragment>
   )
 }
 

@@ -24,3 +24,8 @@ $font-family-base: 'Blinker', 'sans-serif';
 .content::-webkit-scrollbar {
   display: none;
 }
+
+.scrollspy-example {
+  position: relative;
+  overflow-y: auto;
+}
