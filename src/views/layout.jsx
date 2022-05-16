@@ -173,7 +173,11 @@ const Layout = (props) => {
                 }
                 <div className="col-md-auto text-light">
                   <Link to={`/cart`} className="text-decoration-none">
-                    <button className="btn btn-light d-none d-md-block position-relative"><i className="bi bi-cart2 me-1"></i>{price && (price/100).toFixed(2)} {!price && 0} €<span className="position-absolute top-0 start-0 translate-middle bg-primary rounded-pill px-2 text-white">{quantity}<span className="visually-hidden">Nombre d'articles</span></span></button>
+                    <button className="btn btn-light d-none d-md-block position-relative"><i className="bi bi-cart2 me-1"></i>
+                      {price && (price/100).toFixed(2)} 
+                      {price == null && 0} €
+                      <span className="position-absolute top-0 start-0 translate-middle bg-primary rounded-pill px-2 text-white">{quantity}<span className="visually-hidden">Nombre d'articles</span></span>
+                    </button>
                     <div className="d-block d-md-none text-light">{price && (price/100).toFixed(2)} {!price && 0} €</div>
                   </Link>
                 </div>
