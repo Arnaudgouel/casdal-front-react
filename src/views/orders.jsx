@@ -34,6 +34,7 @@ const Order = ({item}) => {
           {item.reference}
         </h2>
         <p className="fw-bold">Le {date.toLocaleDateString()}</p>
+        <p className="fw-bold">Restaurant : {item.name}</p>
         <p><span className="fw-bold">Statut de la commande :</span> {item.status}</p>
         <p><span className="fw-bold">Total :</span> {(item.total/100).toFixed(2)} €</p>
       </div>

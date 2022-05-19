@@ -34,13 +34,13 @@ const CartItem = ({item, me, handleChangeItem, update, disable}) => {
   }
   return (
     <div className="row mt-3">
-      <div className="col-2 text-center">
+      <div className="col-4 text-center">
         <i className="bi bi-dash-circle" style={{cursor: "pointer"}} onClick={() => changeQuantity("decrement")}></i>
         <span className="mx-2">{quantity}</span>
         <i className="bi bi-plus-circle" style={{cursor: "pointer"}} onClick={() => changeQuantity("increment")}></i>
         </div>
-      <div className="col-5">{item.name}</div>
-      <div className="col-5 text-end">{(item.price/100).toFixed(2)} €</div>
+      <div className="col-4">{item.name}</div>
+      <div className="col-4 text-end">{(item.price/100).toFixed(2)} €</div>
     </div>
   )
 }
@@ -127,7 +127,7 @@ const Cart = () => {
         <div className="col-6 text-end">{(price/100).toFixed(2)} €</div>
       </div>
       <div className="mt-3 text-center d-grid">
-        <button className="btn btn-primary btn-lg text-white" onClick={handleValidation}>Valider mon panier</button>
+        <button className="btn btn-primary btn-lg text-white" onClick={handleValidation} disabled={items.length === 0}>Valider mon panier</button>
       </div>
     </div>
   )

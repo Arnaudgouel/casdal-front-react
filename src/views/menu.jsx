@@ -58,7 +58,9 @@ const Products = ({item}) => {
             <div>{(item.price/100).toFixed(2)} €</div>
           </div>
           <div className="col-4">
-            <img className="img-fluid" src={logo} alt="produit" />
+            {item.image && 
+              <img className="img-fluid" src={require(`../assets/img/company/products/${item.image}`)} alt="produit" />
+            }
           </div>
         </div>
       </div>
@@ -73,7 +75,9 @@ const Products = ({item}) => {
       >
         <Box className="position-absolute top-50 start-50 translate-middle bg-light px-5 py-1 text-center mw-100">
           <h2>{item.name}</h2>
-          <img src={logo} alt={item.name} className="img-fluid" width={"200px"} />
+          {item.image &&
+            <img src={require(`../assets/img/company/products/${item.image}`)} alt={item.name} className="img-fluid" width={"200px"} />
+          }
           <div className="row justify-content-around mt-3">
             <div className="col-4">
               <i 
@@ -103,7 +107,6 @@ const Menu = () => {
   const [isLoaded, setIsLoaded] = useState(false)
   const [error, setError] = useState(null)
   let params = useParams()
-
 
   useEffect(() => {
     setIsLoaded(false)
@@ -141,7 +144,7 @@ const Menu = () => {
     <Fragment>
       <div className="bg-info container-fluid pt-5">
         <div className="row h-100 pb-2">
-          <div className="col-md-4 text-center"><img src={logo} alt="logo casdal" className="img-fluid w-25" /></div>
+          <div className="col-md-4 text-center"><img src={require(`../assets/img/company/${company.image}`)} alt="logo restaurant" className="img-fluid w-50" /></div>
           <div className="col-md-8">
             <h2 className="fs-1">{company.name}</h2>
             <h3 className="fs-2">{company.category}</h3>

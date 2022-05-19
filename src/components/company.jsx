@@ -1,15 +1,19 @@
 import { Fragment, useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import logo from "../assets/img/restaurant.jpg"
 import API from "../utils/api"
 
 const CompanyItem = ({className, item}) => {
+
+  let image = require(`../assets/img/company/restaurant.jpg`)
+  if (null !== item.image) {
+    image = require(`../assets/img/company/${item.image}`)
+  }
 
   return (
     <div className={`${className}`}>
       <Link to={`/menu/${item.id}`} className="text-decoration-none text-black">
         <div className="h-100 bg-white shadow">
-          <img className="img-fluid" src={logo} alt="company logo" />
+          <img className="img-fluid" src={image} alt="company logo" />
           <div className="fw-bold">{item.name}</div>
           <div>{item.category}</div>
         </div>
