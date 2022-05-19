@@ -2,7 +2,7 @@ import { Fragment, useMemo, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CartContext } from './utils';
 import { Protected } from './utils/protected';
-import { Addresses, Cart, Home, Layout, Login, Menu, Orders, Profile } from './views';
+import { Addresses, AddressForm, Cart, Home, Layout, Login, Menu, Orders, Profile } from './views';
 
 
 function App() {
@@ -25,6 +25,7 @@ function App() {
                 <Route path='cart' element={<Protected><Cart/></Protected>}/>
                 <Route path='profile' element={<Protected><Profile/></Protected>}/>
                 <Route path='address' element={<Protected><Addresses/></Protected>}/>
+                <Route path='address/add' element={<Protected><AddressForm/></Protected>}/>
                 <Route path='my-orders' element={<Protected><Orders/></Protected>}/>
             </Route>
           </Routes>

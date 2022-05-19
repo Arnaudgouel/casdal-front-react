@@ -5,4 +5,5 @@ export * from './login';
 export * from './cart';
 export * from './profile';
 export * from './address';
+export * from './addressForm';
 export * from './orders';
